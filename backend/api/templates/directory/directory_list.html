@@ -1,0 +1,9 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ item_label }}{% endblock %}
+
+{% block content %}
+<div class="toolbar"><div><h1>{{ item_label }}</h1><p class="intro">Manage {{ item_label|lower }} in the clinic directory.</p></div><a class="button" href="{% if kind == 'department' %}{% url 'department-create' %}{% else %}{% url 'provider-create' %}{% endif %}">Add record</a></div>
+<section class="panel"><form class="search" method="get" role="search"><div style="flex: 1; min-width: 220px;"><label for="directory-search">Search</label><input id="directory-search" name="q" value="{{ query }}" placeholder="Search {{ item_label|lower }}"></div><button type="submit">Search</button>{% if query %}<a class="button secondary" href="{% if kind == 'department' %}{% url 'department-list' %}{% else %}{% url 'provider-list' %}{% endif %}">Clear</a>{% endif %}</form></section>
+<section class="panel" style="margin-top: 18px;">{% if items %}<table><thead><tr><th>Name</th><th>Details</th><th>Created</th><th></th></tr></thead><tbody>{% for item in items %}<tr><td><a href="{% if kind == 'department' %}{% url 'department-detail' item.pk %}{% else %}{% url 'provider-detail' item.pk %}{% endif %}">{% if kind == 'department' %}{{ item.department_name }}{% else %}{{ item.provider_name }}{% endif %}</a></td><td>{% if kind == 'department' %}{{ item.description|default:'No description' }}{% else %}{{ item.email|default:'No email' }}{% endif %}</td><td>{{ item.created_at|default:'Not available' }}</td><td><a href="{% if kind == 'department' %}{% url 'department-update' item.pk %}{% else %}{% url 'provider-update' item.pk %}{% endif %}">Edit</a></td></tr>{% endfor %}</tbody></table>{% else %}<p>No records match this search.</p>{% endif %}</section>
+{% endblock %}

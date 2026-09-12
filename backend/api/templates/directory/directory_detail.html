@@ -1,0 +1,8 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ item_label }}{% endblock %}
+
+{% block content %}
+<div class="toolbar"><div><h1>{% if kind == 'department' %}{{ item.department_name }}{% else %}{{ item.provider_name }}{% endif %}</h1><p class="intro">{{ item_label }} record · <span class="status">Active</span></p></div><a class="button" href="{% if kind == 'department' %}{% url 'department-update' item.pk %}{% else %}{% url 'provider-update' item.pk %}{% endif %}">Edit</a></div>
+<section class="panel"><dl class="detail-grid">{% if kind == 'department' %}<div><dt>Description</dt><dd>{{ item.description|default:'Not provided' }}</dd></div>{% else %}<div><dt>Phone</dt><dd>{{ item.phone|default:'Not provided' }}</dd></div><div><dt>Email</dt><dd>{{ item.email|default:'Not provided' }}</dd></div><div><dt>Address</dt><dd>{{ item.address|default:'Not provided' }}</dd></div>{% endif %}<div><dt>Created</dt><dd>{{ item.created_at|default:'Not available' }}</dd></div></dl><div class="actions"><a class="button secondary" href="{% if kind == 'department' %}{% url 'department-list' %}{% else %}{% url 'provider-list' %}{% endif %}">Back to {{ item_label|lower }}</a></div></section>
+{% endblock %}

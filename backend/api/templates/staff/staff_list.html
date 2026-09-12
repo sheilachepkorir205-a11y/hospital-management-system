@@ -1,0 +1,29 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ staff_label }}{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+    <div><h1>{{ staff_label }}</h1><p class="intro">Find and review {{ staff_label|lower }} records.</p></div>
+    <a class="button" href="{% if is_doctor %}{% url 'doctor-create' %}{% else %}{% url 'nurse-create' %}{% endif %}">Add {{ staff_label|lower|slice:':-1' }}</a>
+</div>
+<section class="panel">
+    <form class="search" method="get" role="search">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="staff-search">Search {{ staff_label|lower }}</label>
+            <input id="staff-search" name="q" value="{{ query }}" placeholder="Name, phone, email, or department">
+        </div>
+        <button type="submit">Search</button>
+        {% if query %}<a class="button secondary" href="{% if is_doctor %}{% url 'doctor-list' %}{% else %}{% url 'nurse-list' %}{% endif %}">Clear</a>{% endif %}
+    </form>
+</section>
+<section class="panel" style="margin-top: 18px;">
+    {% if staff %}<table><thead><tr><th>Name</th><th>Department</th><th>Phone</th><th>Email</th><th>Status</th><th></th></tr></thead><tbody>
+    {% for staff_member in staff %}<tr>
+        <td><a href="{% if is_doctor %}{% url 'doctor-detail' staff_member.pk %}{% else %}{% url 'nurse-detail' staff_member.pk %}{% endif %}">{{ staff_member.first_name }} {{ staff_member.last_name }}</a></td>
+        <td>{{ staff_member.department.department_name|default:'Not assigned' }}</td><td>{{ staff_member.phone|default:'Not provided' }}</td><td>{{ staff_member.email|default:'Not provided' }}</td><td><span class="status">Active</span></td>
+        <td><a href="{% if is_doctor %}{% url 'doctor-update' staff_member.pk %}{% else %}{% url 'nurse-update' staff_member.pk %}{% endif %}">Edit</a></td>
+    </tr>{% endfor %}</tbody></table>
+    {% else %}<p>No {{ staff_label|lower }} records match this search.</p>{% endif %}
+</section>
+{% endblock %}

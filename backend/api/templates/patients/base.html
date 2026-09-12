@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Patient management{% endblock %} | Clinic</title>
+    <style>
+        :root { color-scheme: light; --ink: #1f2933; --muted: #667085; --line: #d9e2ec; --paper: #ffffff; --wash: #f4f7f9; --accent: #0f766e; --accent-dark: #115e59; --danger: #b42318; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--wash); color: var(--ink); font: 16px/1.5 Georgia, 'Times New Roman', serif; }
+        header { background: #123c40; color: white; }
+        .topbar, main { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; }
+        .brand { color: white; font-size: 1.3rem; font-weight: 700; text-decoration: none; }
+        nav a { color: #d7f5ef; margin-left: 18px; text-decoration: none; }
+        main { padding: 42px 0 64px; }
+        h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; }
+        h2 { margin-top: 0; }
+        .intro { color: var(--muted); margin: 0 0 28px; }
+        .panel { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 24px; box-shadow: 0 8px 24px rgba(15, 60, 64, .06); }
+        .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 22px; }
+        .search { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+        label { display: block; font-weight: 700; margin-bottom: 6px; }
+        input, select, textarea { width: 100%; border: 1px solid #b8c5d0; border-radius: 5px; padding: 10px 12px; font: inherit; color: inherit; background: white; }
+        .search input { min-width: 220px; }
+        .field { margin-bottom: 18px; }
+        .field small, .helptext { color: var(--muted); }
+        .errors { color: var(--danger); margin: 5px 0 0; padding-left: 18px; }
+        .button, button { display: inline-block; border: 0; border-radius: 5px; padding: 10px 16px; background: var(--accent); color: white; cursor: pointer; font: 700 1rem inherit; text-decoration: none; }
+        .button:hover, button:hover { background: var(--accent-dark); }
+        .button.secondary { background: #e5eeee; color: #17494b; }
+        .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border-bottom: 1px solid var(--line); padding: 14px 10px; text-align: left; vertical-align: top; }
+        th { color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+        td a { color: var(--accent-dark); font-weight: 700; }
+        .status { display: inline-block; border-radius: 999px; padding: 3px 10px; background: #d9f5e9; color: #116149; font: 700 .82rem Arial, sans-serif; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 28px; }
+        .detail-grid dt { color: var(--muted); font-size: .9rem; }
+        .detail-grid dd { margin: 3px 0 0; font-weight: 700; }
+        .message { border-left: 4px solid var(--accent); background: #e7f6f2; padding: 12px 16px; margin-bottom: 20px; }
+        @media (max-width: 700px) { .topbar { align-items: flex-start; flex-direction: column; } nav a { margin: 0 14px 0 0; } .panel { padding: 18px; } .detail-grid { grid-template-columns: 1fr; } table { display: block; overflow-x: auto; white-space: nowrap; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="topbar">
+            <a class="brand" href="{% url 'patient-list' %}">Clinic records</a>
+            <nav aria-label="Primary navigation">
+                <a href="{% url 'patient-list' %}">Patients</a>
+                <a href="{% url 'patient-create' %}">Register patient</a>
+                <a href="{% url 'doctor-list' %}">Doctors</a>
+                <a href="{% url 'nurse-list' %}">Nurses</a>
+                <a href="{% url 'department-list' %}">Departments</a>
+                <a href="{% url 'provider-list' %}">Insurance</a>
+                <form method="post" action="{% url 'logout' %}" style="display: inline; margin-left: 18px;">
+                    {% csrf_token %}<button type="submit" style="padding: 0; background: transparent; color: #d7f5ef; font: inherit;">Sign out</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+    <main>
+        {% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

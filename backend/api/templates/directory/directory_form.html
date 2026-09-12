@@ -1,0 +1,5 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}<h1>{{ page_title }}</h1><p class="intro">Enter the directory details.</p><section class="panel"><form method="post" novalidate>{% csrf_token %}{% for field in form %}<div class="field">{{ field.label_tag }}{{ field }}{% if field.errors %}<ul class="errors">{{ field.errors }}</ul>{% endif %}</div>{% endfor %}<div class="actions"><button type="submit">Save record</button><a class="button secondary" href="{% if item %}{% if item_label == 'department' %}{% url 'department-detail' item.pk %}{% else %}{% url 'provider-detail' item.pk %}{% endif %}{% else %}{% if item_label == 'department' %}{% url 'department-list' %}{% else %}{% url 'provider-list' %}{% endif %}{% endif %}">Cancel</a></div></form></section>{% endblock %}

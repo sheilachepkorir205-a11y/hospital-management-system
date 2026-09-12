@@ -1,0 +1,13 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ staff_member.first_name }} {{ staff_member.last_name }}{% endblock %}
+
+{% block content %}
+<div class="toolbar"><div><h1>{{ staff_member.first_name }} {{ staff_member.last_name }}</h1><p class="intro">{{ staff_label }} record {{ staff_member.pk }} · <span class="status">Active</span></p></div><a class="button" href="{% if is_doctor %}{% url 'doctor-update' staff_member.pk %}{% else %}{% url 'nurse-update' staff_member.pk %}{% endif %}">Edit {{ staff_label|lower }}</a></div>
+<section class="panel"><h2>{{ staff_label }} details</h2><dl class="detail-grid">
+    <div><dt>First name</dt><dd>{{ staff_member.first_name }}</dd></div><div><dt>Last name</dt><dd>{{ staff_member.last_name }}</dd></div>
+    {% if is_doctor %}<div><dt>Specialization</dt><dd>{{ staff_member.specialization|default:'Not provided' }}</dd></div>{% endif %}
+    <div><dt>Department</dt><dd>{{ staff_member.department.department_name|default:'Not assigned' }}</dd></div><div><dt>Phone</dt><dd>{{ staff_member.phone|default:'Not provided' }}</dd></div><div><dt>Email</dt><dd>{{ staff_member.email|default:'Not provided' }}</dd></div><div><dt>Created</dt><dd>{{ staff_member.created_at|default:'Not available' }}</dd></div>
+    {% if is_doctor %}<div><dt>Last updated</dt><dd>{{ staff_member.updated_at|default:'Not available' }}</dd></div>{% endif %}
+</dl><div class="actions"><a class="button secondary" href="{% if is_doctor %}{% url 'doctor-list' %}{% else %}{% url 'nurse-list' %}{% endif %}">Back to {{ staff_label|lower }}</a></div></section>
+{% endblock %}

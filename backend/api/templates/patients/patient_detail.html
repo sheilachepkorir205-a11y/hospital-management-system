@@ -1,0 +1,27 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ patient.first_name }} {{ patient.last_name }}{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+    <div><h1>{{ patient.first_name }} {{ patient.last_name }}</h1><p class="intro">Patient ID {{ patient.patient_id }} · <span class="status">Registered</span></p></div>
+    <a class="button" href="{% url 'patient-update' patient.patient_id %}">Edit patient</a>
+</div>
+<section class="panel">
+    <h2>Patient details</h2>
+    <dl class="detail-grid">
+        <div><dt>First name</dt><dd>{{ patient.first_name }}</dd></div>
+        <div><dt>Last name</dt><dd>{{ patient.last_name }}</dd></div>
+        <div><dt>Date of birth</dt><dd>{{ patient.date_of_birth|default:'Not provided' }}</dd></div>
+        <div><dt>Gender</dt><dd>{{ patient.gender|default:'Not provided' }}</dd></div>
+        <div><dt>Phone</dt><dd>{{ patient.phone|default:'Not provided' }}</dd></div>
+        <div><dt>Blood group</dt><dd>{{ patient.blood_group|default:'Not provided' }}</dd></div>
+        <div><dt>Address</dt><dd>{{ patient.address|default:'Not provided' }}</dd></div>
+        <div><dt>Insurance provider</dt><dd>{{ patient.insurance_provider.provider_name|default:'Not provided' }}</dd></div>
+        <div><dt>Insurance member number</dt><dd>{{ patient.insurance_member_number|default:'Not provided' }}</dd></div>
+        <div><dt>Registered</dt><dd>{{ patient.created_at|default:'Not available' }}</dd></div>
+        <div><dt>Last updated</dt><dd>{{ patient.updated_at|default:'Not available' }}</dd></div>
+    </dl>
+    <div class="actions"><a class="button secondary" href="{% url 'patient-list' %}">Back to patients</a></div>
+</section>
+{% endblock %}
